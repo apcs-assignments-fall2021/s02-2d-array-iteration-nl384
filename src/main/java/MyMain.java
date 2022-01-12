@@ -7,8 +7,15 @@ public class MyMain {
     //      int x = "apple".compareTo("banana"); // x is negative
     //      int y = "banana".compareTo("apple"); // y is positive
     public static String findLastWord(String[] arr) {
-        // YOUR CODE HERE
-        return "";
+//        // YOUR CODE HERE
+//        return "";
+        String last = arr[0];
+        for (String x: arr) {
+            if (x.compareTo(last) > 0) {
+                last = x;
+            }
+        }
+        return last;
     }
 
     // Given a 2D array, return an 1D array of the last word
@@ -16,8 +23,18 @@ public class MyMain {
     // You can assume that the matrix will not be empty
     // Hint: use the previous method to help yourself!
     public static String[] findLastWord2D(String[][] mat) {
-        // YOUR CODE HERE
-        return null;
+//        // YOUR CODE HERE
+//        return "";
+
+        String[] lastWords = new String[mat.length];
+
+        for (int row = 0; row < mat.length; row++) {
+            String[] arr = mat[row];
+            String rowLast = findLastWord(arr);
+            lastWords[row] = rowLast;
+        }
+
+        return lastWords;
     }
 
     // Given a 2D array and some column index col
@@ -30,8 +47,18 @@ public class MyMain {
     // Hint: remember how the indexOf() method works?
     // alternatively, consider the contains() method
     public static int appleCounter(String[][] mat, int col) {
-        // YOUR CODE HERE
-        return -1;
+//        // YOUR CODE HERE
+//        return -1;
+        int count = 0;
+
+        for (int row = 0; row < mat.length; row++) {
+            String x = mat[row][col];
+            if (x.indexOf("apple") > -1) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     // Given a 2D array, return the column number corresponding
@@ -41,8 +68,20 @@ public class MyMain {
     // Hint: use your previous method!
     // Hint 2: you might need to loop through the columns!
     public static int findMostAppleColumn(String[][] mat) {
-        // YOUR CODE HERE
-        return -1;
+//        // YOUR CODE HERE
+//        return -1;
+        int most = appleCounter(mat, 0);
+        int mostIdx = 0;
+
+        for (int col = 1; col < mat[0].length; col++) {
+            int count = appleCounter(mat, col);
+            if (count > most) {
+                most = count;
+                mostIdx = col;
+            }
+        }
+
+        return mostIdx;
     }
 
 
@@ -70,8 +109,21 @@ public class MyMain {
     //       from top to bottom
 
     public static int[][] pascal(int height) {
-        // YOUR CODE HERE
-        return null;
+//        // YOUR CODE HERE
+//        return null;
+        int[][] mat = new int[height][height];
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < row+1; col++) {
+                // If col is the beginning or col is along the diagonal
+                if (col == 0 || col == row) {
+                    mat[row][col] = 1;
+                }
+                else {
+                    mat[row][col] = mat[row-1][col] + mat[row-1][col-1];
+                }
+            }
+        }
+        return mat;
     }
 
 
@@ -108,7 +160,57 @@ public class MyMain {
     // * can you use a for loop that goes through that pattern?
     public static boolean isMagic(int[][] mat) {
         // YOUR CODE HERE
-        return false;
+        int sum = 0;
+
+        for (int row = 0; row < mat.length; row++) {
+            sum += mat[row][0];
+        }
+
+        // Go through rows
+        for (int row = 0; row < mat.length; row++) {
+            int rowSum = 0;
+            for (int col = 0; col < mat[0].length; col++) {
+                rowSum += mat[row][col];
+            }
+            if (rowSum != sum) {
+                return false;
+            }
+        }
+
+        // Go through columns
+        for (int col = 0; col < mat[0].length; col++) {
+            int colSum = 0;
+            for (int row = 0; row < mat.length; row++) {
+                colSum += mat[row][col];
+            }
+            if (colSum != sum) {
+                return false;
+            }
+        }
+
+        // Go through diagonal 1
+        int diagSum1 = 0;
+
+        for (int i = 0; i < mat.length; i++) {
+            diagSum1 += mat[i][i];
+        }
+
+        if (diagSum1 != sum) {
+            return false;
+        }
+
+        // Go through diagonal 2
+        int diagSum2 = 0;
+
+        for (int i = 0; i < mat.length; i++) {
+            diagSum2 += mat[i][mat.length-1-i];
+        }
+
+        if (diagSum2 != sum) {
+            return false;
+        }
+
+        return true;
     }
 
 
